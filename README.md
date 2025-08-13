@@ -1,10 +1,5 @@
 # SyncBridge
 #### Video Demo: https://youtu.be/DkqyyDbcnYo
-![SyncBridge](https://img.shields.io/badge/SyncBridge-MERN%20Stack-blue)
-![License](https://img.shields.io/badge/license-MIT-green)
-![Node](https://img.shields.io/badge/Node.js-18%2B-green)
-![React](https://img.shields.io/badge/React-18-blue)
-![MongoDB](https://img.shields.io/badge/MongoDB-6.0%2B-green)
 
 #### Description:
 
