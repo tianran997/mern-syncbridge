@@ -1,65 +1,215 @@
 # SyncBridge
 #### Video Demo: https://youtu.be/DkqyyDbcnYo
+![SyncBridge](https://img.shields.io/badge/SyncBridge-MERN%20Stack-blue)
+![License](https://img.shields.io/badge/license-MIT-green)
+![Node](https://img.shields.io/badge/Node.js-18%2B-green)
+![React](https://img.shields.io/badge/React-18-blue)
+![MongoDB](https://img.shields.io/badge/MongoDB-6.0%2B-green)
+
 #### Description:
 
-**SyncBridge** is a minimalist file and message transfer tool built for individual users to seamlessly **sync content across their own multiple devices**. Whether you're working on a laptop, phone, tablet, or desktop, SyncBridge allows you to easily send files, images, or text from one device and access them instantly on another — simply by **logging into the same account**. It is built using **Flask** (Python), **HTML/CSS/JS**, and uses **AJAX** to provide live updates without requiring the page to reload.
+**SyncBridge** is a minimalist file and message transfer tool built for individual users to seamlessly **sync content across their own multiple devices**. Whether you're working on a laptop, phone, tablet, or desktop, SyncBridge allows you to easily send files, images, or text from one device and access them instantly on another — simply by **logging into the same account**. 
 
-The app is intentionally simple and fast. One of the key features of the app is that **shared messages and files expire after 24 hours**, keeping the interface clean and relevant. Of course, users can clear the interface manually by clicking the **Clear All** button.
+This version is rebuilt using the **MERN stack** (MongoDB, Express.js, React, Node.js) to provide a modern, scalable, and maintainable architecture with improved performance and user experience.
 
-#### 1. Features
+## ✨ Features
 
-- Real-time message updates every 3 seconds using JavaScript and `fetch()`
-- Drag-and-drop file upload support
-- “Copy” buttons for each shared message
-- One-click "Clear All" to erase shared content
-- 24-hour expiration for all messages/files using database timestamps
-- Simple session-based user login
+- **Real-time message updates** every 3 seconds using React state and `fetch()`
+- **Drag-and-drop file upload** support with visual feedback
+- **"Copy" buttons** for each shared message with instant clipboard integration
+- **One-click "Clear All"** to erase all shared content
+- **24-hour expiration** for all messages/files using MongoDB TTL indexes
+- **JWT-based authentication** with secure user sessions
+- **Responsive design** with light and dark mode support
+- **Modern React UI** with component-based architecture
 
+## Tech Stack
 
-#### 2. Backend (Flask)
+### Backend
+- **Node.js** - Runtime environment
+- **Express.js** - Web framework
+- **MongoDB** - NoSQL database
+- **Mongoose** - ODM for MongoDB
+- **JWT** - Authentication tokens
+- **Multer** - File upload handling
+- **bcryptjs** - Password hashing
 
-The main backend file is `app.py`. It includes the following key routes:
+### Frontend
+- **React 18** - Frontend library
+- **React Router** - Client-side routing
+- **Axios** - HTTP client
+- **Modern CSS** - Responsive styling with Flexbox
 
-- `/` – Displays the main page (requires login via session)
-- `/register`- Allows a user to register with a username and password.
-- `/login` – Allows a user to log in with the username and password.
-- `/logout` – Clears the session and returns to login screen
-- `/send_message` – Receives POST requests to store new text messages
-- `/upload` – Handles file uploads via drag-and-drop or file select
-- `/uploads/<username>/<filename>` - To ensure that users only access their own uploaded files
-- `/messages` – Returns all messages/files from the last 24 hours in JSON
-- `/clear` – Deletes all content for all users (for demo purposes)
+## Project Structure
 
-All text and file messages are stored in a **SQLite** database (`sync.db`) located in the root of the project. This database contains two primary tables: one for users, and one for messages. Messages include both text and file records, and each message is associated with a user ID and a timestamp.
+```
+syncbridge-mern/
+├── backend/
+│   ├── server.js              # Main server file
+│   ├── models/
+│   │   ├── User.js            # User schema
+│   │   └── Message.js         # Message schema
+│   ├── routes/
+│   │   ├── auth.js            # Authentication routes
+│   │   └── messages.js        # Message & file routes
+│   ├── middleware/
+│   │   └── auth.js            # JWT authentication middleware
+│   ├── uploads/               # File storage directory
+│   └── package.json
+├── frontend/
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── Login.js       # Login component
+│   │   │   ├── Register.js    # Registration component
+│   │   │   └── Dashboard.js   # Main dashboard
+│   │   ├── App.js             # Main app component
+│   │   ├── App.css           # Global styles
+│   │   └── index.js          # App entry point
+│   ├── public/
+│   │   └── index.html
+│   └── package.json
+└── README.md
+```
 
-Old messages (older than 24 hours) are automatically excluded from the interface for cleanliness and privacy, though they may still exist in the database unless explicitly cleared.
+## Installation & Setup
 
-#### 3. Frontend (HTML + JS + CSS)
+### Prerequisites
+- Node.js (18 or higher)
+- MongoDB (local installation or MongoDB Atlas account)
+- Git
 
-The frontend uses a clean, responsive layout with a card-based UI. The styling (`style.css`) uses flexbox layout for dividing content, and includes both light and dark mode support.
+### 1. Clone the Repository
+```bash
+git clone <your-repository-url>
+cd syncbridge-mern
+```
 
-In `script.js`, JavaScript handles:
+### 2. Backend Setup
+```bash
+cd backend
+npm install
 
-- Submitting messages asynchronously
-- Drag-and-drop file upload via `fetch` and `FormData`
-- Auto-refreshing shared content via `setInterval(loadMessages, 3000)`
-- Showing buttons that copy content directly to the clipboard
-- Dynamically creating DOM elements based on returned JSON data. This makes the frontend fully dynamic without needing any page refresh.
+# Create environment file
+cat > .env << 'EOF'
+MONGODB_URI=mongodb://localhost:27017/syncbridge
+JWT_SECRET=your-very-secure-secret-key-here
+PORT=5001
+EOF
 
-#### 4. Database Schema
+# Start the backend server
+npm run dev
+```
 
-The `sync.db` database consists of two primary tables:
+### 3. Frontend Setup
+```bash
+cd ../frontend
+npm install
 
-- `users`: Contains `id`, `username`, and `password_hash` columns. Passwords are securely hashed using Werkzeug's `generate_password_hash()` function.
-- `messages`: Contains `id`, `user_id`, `type` (`text` or `file`), `content` (the message string or filename), and `timestamp`.
+# Start the React development server
+npm start
+```
 
-Each message is linked to a specific user via the foreign key `user_id`, allowing user-specific filtering of content. The `timestamp` is stored as a UNIX epoch time (`float`), making it easy to filter out expired content after 24 hours.
+### 4. MongoDB Setup
 
+**MongoDB Atlas (Cloud)**
+1. Create account at [MongoDB Atlas](https://www.mongodb.com/atlas)
+2. Create a free cluster
+3. Get connection string
+4. Update `MONGODB_URI` in backend `.env` file
 
-#### 5. Design Decisions
+## 💾 Database Schema
 
-- **Clipboard Integration**: Each message has a “Copy to clipboard” button for quick transfer of text or links between devices.
-- **Session Authentication**: Uses Flask-Session with filesystem-based storage to persist login sessions.
-- **Security**: File uploads are restricted to a safe set of extensions and sanitized with `secure_filename()`; session checks ensure users only access their own uploads.
-- **Shared Layout (layout.html)**: Login and register pages use a common base layout for consistent styling and maintainability.
-- **AJAX-based UI**: JavaScript (`script.js`) handles asynchronous interaction using `fetch()` and polls new content every 3 seconds for a real-time feel.
+### User Collection
+```javascript
+{
+  _id: ObjectId,
+  username: String (unique),
+  password: String (hashed),
+  createdAt: Date,
+  updatedAt: Date
+}
+```
+
+### Message Collection
+```javascript
+{
+  _id: ObjectId,
+  userId: ObjectId (ref: User),
+  type: String ('text' | 'file'),
+  content: String,
+  createdAt: Date (with TTL index: 24 hours),
+}
+```
+
+## 🔧 Key Features Explained
+
+### 1. Real-time Updates
+React components use `useEffect` and `setInterval` to poll for new messages every 3 seconds, providing near real-time synchronization across devices.
+
+### 2. File Upload System
+- **Backend**: Uses Multer middleware to handle multipart/form-data
+- **Frontend**: Supports both drag-and-drop and click-to-select file upload
+- **Security**: Files are stored in user-specific directories and access is authenticated
+
+### 3. Authentication Flow
+- JWT tokens stored in localStorage
+- Protected routes using authentication middleware
+- Automatic token validation on each API request
+
+### 4. Automatic Cleanup
+MongoDB TTL (Time To Live) indexes automatically remove messages older than 24 hours, keeping the database clean without manual intervention.
+
+### 5. Cross-Device Sync
+Users can log in from multiple devices simultaneously. All devices will show the same synchronized content through the polling mechanism.
+
+## 🔒 Security Features
+
+- **Password hashing**: bcryptjs with salt rounds
+- **JWT authentication**: Secure token-based sessions
+- **File access control**: Users can only access their own uploaded files
+- **Input validation**: Server-side validation for all inputs
+- **CORS configuration**: Proper cross-origin resource sharing setup
+
+## 🚦 Usage
+
+1. **Register/Login**: Create an account or log in with existing credentials
+2. **Send Messages**: Type in the text field and click "Send"
+3. **Upload Files**: Drag files onto the drop zone or click to select
+4. **Copy Content**: Use the copy button next to each message
+5. **Access on Other Devices**: Log in with the same account on any device
+6. **Clean Up**: Use "Clear All" button to remove all content
+
+## 🔄 Differences from Flask Version
+
+| Feature | Flask Version | MERN Version |
+|---------|---------------|--------------|
+| **Backend** | Flask + SQLite | Express.js + MongoDB |
+| **Frontend** | Server-rendered HTML | React SPA |
+| **Authentication** | Flask sessions | JWT tokens |
+| **Database** | SQLite with manual queries | MongoDB with Mongoose ODM |
+| **Real-time Updates** | JavaScript polling | React state management |
+| **Architecture** | Monolithic | Separated frontend/backend |
+| **Scalability** | Limited | Highly scalable |
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## 🎯 Future Enhancements
+
+- [ ] WebSocket integration for true real-time updates
+- [ ] File preview functionality
+- [ ] Bulk file operations
+- [ ] Message search and filtering
+- [ ] Mobile app development
+- [ ] End-to-end encryption
+- [ ] File sharing with expiration links
+- [ ] User profile management
