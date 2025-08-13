@@ -1,255 +1,42 @@
-* {
-  box-sizing: border-box;
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
 }
 
-body {
-  font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
-  margin: 0;
-  padding: 0;
-  background: #f2f4f8;
-  color: #333;
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
 }
 
-@media (prefers-color-scheme: dark) {
-  body {
-    background: #1e1e1e;
-    color: #eee;
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
   }
 }
 
-/* Auth styles */
-.auth-container {
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: linear-gradient(135deg, #667eea, #764ba2);
-}
-
-.auth-card {
-  background: rgba(255, 255, 255, 0.1);
-  padding: 30px 40px;
-  border-radius: 12px;
-  width: 100%;
-  max-width: 400px;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.25);
-  backdrop-filter: blur(8px);
-  color: white;
-}
-
-.auth-card h2 {
-  text-align: center;
-  margin-bottom: 25px;
-  font-weight: 600;
-}
-
-.auth-card form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-.auth-card input {
-  padding: 12px 15px;
-  border-radius: 6px;
-  border: none;
-  font-size: 1rem;
-  outline: none;
-  transition: box-shadow 0.3s ease;
-}
-
-.auth-card input:focus {
-  box-shadow: 0 0 8px 2px #a29bfe;
-}
-
-.error {
-  background-color: #ff7675;
-  padding: 10px;
-  border-radius: 6px;
-  text-align: center;
-  font-weight: 600;
-  color: #fff;
-  margin-bottom: 15px;
-}
-
-.auth-link {
-  margin-top: 12px;
-  text-align: center;
-  font-size: 0.9rem;
-}
-
-.auth-link a {
-  color: #dfe6e9;
-  text-decoration: none;
-  font-weight: 600;
-}
-
-.auth-link a:hover {
-  text-decoration: underline;
-}
-
-/* Dashboard styles */
-.container {
-  max-width: 960px;
-  margin: auto;
-  padding: 30px 20px;
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
 }
 
 .card {
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-  padding: 24px;
-  margin-bottom: 20px;
+  padding: 2em;
 }
 
-@media (prefers-color-scheme: dark) {
-  .card {
-    background: #2b2b2b;
-  }
-}
-
-.top-bar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-h1 {
-  font-weight: 600;
-  margin: 0;
-}
-
-.btn {
-  padding: 8px 16px;
-  font-size: 0.95rem;
-  background: #6c5ce7;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.btn:hover {
-  background: #5a4bd4;
-}
-
-.btn:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-.btn-danger {
-  background: #e74c3c;
-}
-
-.btn-danger:hover {
-  background: #c0392b;
-}
-
-.card form {
-  display: flex;
-  gap: 10px;
-  margin: 15px 0;
-}
-
-.card form input[type="text"] {
-  flex: 1;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 1rem;
-}
-
-.dropzone {
-  border: 2px dashed #aaa;
-  padding: 20px;
-  text-align: center;
-  color: #666;
-  border-radius: 8px;
-  cursor: pointer;
-  user-select: none;
-  transition: border-color 0.3s;
-}
-
-.dropzone:hover {
-  border-color: #6c5ce7;
-}
-
-.content-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20px;
-}
-
-.text-column, .file-column {
-  flex: 1 1 45%;
-  max-height: 400px;
-  overflow-y: auto;
-  background: #f9f9f9;
-  border-radius: 8px;
-  padding: 12px;
-}
-
-@media (prefers-color-scheme: dark) {
-  .text-column, .file-column {
-    background: #1f1f1f;
-  }
-}
-
-.message, .file-item {
-  padding: 8px 10px;
-  margin-bottom: 6px;
-  background: #eaecef;
-  border-radius: 6px;
-  font-size: 0.95rem;
-}
-
-.message {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.message button {
-  background-color: transparent;
-  border: 1px solid #aaa;
-  border-radius: 4px;
-  color: #333;
-  padding: 2px 6px;
-  font-size: 0.8rem;
-  cursor: pointer;
-}
-
-@media (prefers-color-scheme: dark) {
-  .message button {
-    border-color: #555;
-    color: #ccc;
-  }
-}
-
-.file-link {
-  color: #6c5ce7;
-  text-decoration: none;
-}
-
-.file-link:hover {
-  text-decoration: underline;
-}
-
-h2 {
-  font-size: 1.1rem;
-  margin-top: 10px;
-}
-
-@media (max-width: 768px) {
-  .content-container {
-    flex-direction: column;
-  }
-  
-  .text-column, .file-column {
-    flex: 1 1 100%;
-  }
+.read-the-docs {
+  color: #888;
 }
