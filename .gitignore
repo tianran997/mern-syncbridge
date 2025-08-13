@@ -1,0 +1,34 @@
+# ===============================
+# MERN SyncBridge Git Ignore
+# ===============================
+
+# 1. Dependencies
+node_modules/
+
+# 2. Build / Production
+build/
+dist/
+coverage/
+.tmp/
+.cache/
+
+# 3. Environment variables (private!)
+.env
+.env.*
+backend/.env
+frontend/.env
+
+# 4. Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 5. OS / Editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# 6. File uploads (user data, not tracked in Git)
+backend/uploads/
