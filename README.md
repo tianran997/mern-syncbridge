@@ -112,7 +112,7 @@ npm start
 3. Get connection string
 4. Update `MONGODB_URI` in backend `.env` file
 
-## 💾 Database Schema
+## Database Schema
 
 ### User Collection
 ```javascript
@@ -136,7 +136,7 @@ npm start
 }
 ```
 
-## 🔧 Key Features Explained
+## Key Features Explained
 
 ### 1. Real-time Updates
 React components use `useEffect` and `setInterval` to poll for new messages every 3 seconds, providing near real-time synchronization across devices.
@@ -157,7 +157,7 @@ MongoDB TTL (Time To Live) indexes automatically remove messages older than 24 h
 ### 5. Cross-Device Sync
 Users can log in from multiple devices simultaneously. All devices will show the same synchronized content through the polling mechanism.
 
-## 🔒 Security Features
+## Security Features
 
 - **Password hashing**: bcryptjs with salt rounds
 - **JWT authentication**: Secure token-based sessions
@@ -165,7 +165,7 @@ Users can log in from multiple devices simultaneously. All devices will show the
 - **Input validation**: Server-side validation for all inputs
 - **CORS configuration**: Proper cross-origin resource sharing setup
 
-## 🚦 Usage
+## Usage
 
 1. **Register/Login**: Create an account or log in with existing credentials
 2. **Send Messages**: Type in the text field and click "Send"
@@ -174,7 +174,7 @@ Users can log in from multiple devices simultaneously. All devices will show the
 5. **Access on Other Devices**: Log in with the same account on any device
 6. **Clean Up**: Use "Clear All" button to remove all content
 
-## 🔄 Differences from Flask Version
+## Differences from Flask Version
 
 | Feature | Flask Version | MERN Version |
 |---------|---------------|--------------|
@@ -186,7 +186,7 @@ Users can log in from multiple devices simultaneously. All devices will show the
 | **Architecture** | Monolithic | Separated frontend/backend |
 | **Scalability** | Limited | Highly scalable |
 
-## 🤝 Contributing
+## Contributing
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
@@ -194,11 +194,11 @@ Users can log in from multiple devices simultaneously. All devices will show the
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 🎯 Future Enhancements
+## Future Enhancements
 
 - [ ] WebSocket integration for true real-time updates
 - [ ] File preview functionality
