@@ -4,16 +4,19 @@ import cors from 'cors';
 import path from 'path';
 import fs from 'fs';
 import dotenv from 'dotenv';
+import { fileURLToPath } from 'url';
 
-// Import routes and models
 import authRoutes from './routes/auth.js';
 import messageRoutes from './routes/messages.js';
 import Message from './models/Message.js';
 
 dotenv.config();
 
+// 修复 __dirname
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const app = express();
-const __dirname = path.resolve();
 const uri = process.env.MONGODB_URI;
 
 // Middleware
@@ -25,32 +28,14 @@ if (process.env.NODE_ENV !== "production") {
 }
 
 app.use(express.json());
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Create uploads directory if it doesn't exist
+// 静态资源：文件上传路径
 const uploadsDir = path.join(__dirname, 'uploads');
 if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir, { recursive: true });
 }
+app.use('/uploads', express.static(uploadsDir));
 
-// // Database connection
-// mongoose.connect(process.env.MONGODB_URI , {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true,
-// });
-
-// // Database connection events
-// mongoose.connection.on('connected', () => {
-//   console.log('✅ Connected to MongoDB');
-// });
-
-// mongoose.connection.on('error', (err) => {
-//   console.error('❌ MongoDB connection error:', err);
-// });
-
-// mongoose.connection.on('disconnected', () => {
-//   console.log('MongoDB disconnected');
-// });
 if (!uri) {
   console.error('❌ MONGODB_URI is not set in .env');
   process.exit(1);
@@ -61,41 +46,29 @@ const connectDB = async () => {
     await mongoose.connect(uri, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-      tls: true, // 强制 TLS 连接
+      tls: true,
     });
     console.log('✅ Connected to MongoDB Atlas');
   } catch (error) {
-    console.error('❌ MongoDB connection error:');
-    console.error(error.message);
-    console.error('💡 Make sure your IP is whitelisted in MongoDB Atlas and your URI is correct.');
+    console.error('❌ MongoDB connection error:', error.message);
     process.exit(1);
   }
 };
-
 connectDB();
 
 // Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/messages', messageRoutes);
 
-// Error handling middleware
-app.use((error, req, res, next) => {
-  console.error('Server error:', error);
-  res.status(500).json({ 
-    message: 'Internal server error',
-    error: process.env.NODE_ENV === 'development' ? error.message : 'Something went wrong'
-  });
-});
-
+// Serve frontend
 app.use(express.static(path.join(__dirname, "../frontend/build")));
-
 if (process.env.NODE_ENV === "production") {
   app.get("*", (req, res) => {
     res.sendFile(path.join(__dirname, "../frontend", "build", "index.html"));
   });
 }
 
-// Clean up expired messages every hour
+// 定时清理过期消息
 setInterval(async () => {
   try {
     const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);

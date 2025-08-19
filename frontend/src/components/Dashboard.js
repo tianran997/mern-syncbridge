@@ -50,7 +50,7 @@ function Dashboard({ user, onLogout }) {
       setLoading(false);
     }
   };
-
+  // 上传文件（修复接口）
   const uploadFile = async (file) => {
     const formData = new FormData();
     formData.append('file', file);
@@ -70,10 +70,10 @@ function Dashboard({ user, onLogout }) {
       loadMessages();
     } catch (error) {
       console.error('Failed to upload file:', error);
-      console.error('Error details:', error.response?.data);
       alert(`Upload failed: ${error.response?.data?.message || error.message}`);
     }
   };
+
 
   const clearMessages = async () => {
     try {

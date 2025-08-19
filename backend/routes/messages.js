@@ -2,12 +2,17 @@ import express from 'express';
 import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
+import { fileURLToPath } from 'url';
 import Message from '../models/Message.js';
 import auth from '../middleware/auth.js';
 
 const router = express.Router();
 
-// Configure multer for file uploads
+// 修复 __dirname
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// 配置 multer
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     const userDir = path.join(__dirname, '../uploads', req.user.username);
@@ -27,7 +32,6 @@ const upload = multer({
     const allowedTypes = /txt|pdf|png|jpg|jpeg|docx/;
     const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
     const mimetype = allowedTypes.test(file.mimetype);
-    
     if (mimetype && extname) {
       return cb(null, true);
     }
@@ -35,11 +39,10 @@ const upload = multer({
   }
 });
 
-// Get messages
+// 获取消息
 router.get('/', auth, async (req, res) => {
   try {
-    const messages = await Message.find({ userId: req.user._id })
-      .sort({ createdAt: -1 });
+    const messages = await Message.find({ userId: req.user._id }).sort({ createdAt: -1 });
 
     const formattedMessages = messages.map(msg => ({
       type: msg.type,
@@ -54,11 +57,10 @@ router.get('/', auth, async (req, res) => {
   }
 });
 
-// Send text message
+// 发送文本消息
 router.post('/text', auth, async (req, res) => {
   try {
     const { message } = req.body;
-    
     if (!message || !message.trim()) {
       return res.status(400).json({ message: 'Message content required' });
     }
@@ -76,7 +78,7 @@ router.post('/text', auth, async (req, res) => {
   }
 });
 
-// Upload file
+// 上传文件
 router.post('/upload', auth, upload.single('file'), async (req, res) => {
   try {
     if (!req.file) {
@@ -96,7 +98,7 @@ router.post('/upload', auth, upload.single('file'), async (req, res) => {
   }
 });
 
-// Clear all messages
+// 清空消息
 router.delete('/clear', auth, async (req, res) => {
   try {
     await Message.deleteMany({ userId: req.user._id });
