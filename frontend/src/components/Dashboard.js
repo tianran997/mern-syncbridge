@@ -37,8 +37,8 @@ function Dashboard({ user, onLogout }) {
     setLoading(true);
     try {
       const token = localStorage.getItem('token');
-      console.log('Sending message to:', `${API_BASE_URL}/messages/text`);
-      await axios.post(`${API_BASE_URL}/messages/text`, 
+      console.log('Sending message to:', `${BASE_URL}/messages/text`);
+      await axios.post(`${BASE_URL}/messages/text`, 
         { message: newMessage },
         { headers: { Authorization: `Bearer ${token}` }}
       );
@@ -57,9 +57,9 @@ function Dashboard({ user, onLogout }) {
 
     try {
       const token = localStorage.getItem('token');
-      console.log('Uploading file to:', `${API_BASE_URL}/messages/upload`);
+      console.log('Uploading file to:', `${BASE_URL}/messages/upload`);
       
-      const response = await axios.post(`${API_BASE_URL}/messages/upload`, formData, {
+      const response = await axios.post(`${BASE_URL}/messages/upload`, formData, {
         headers: { 
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data'
@@ -78,7 +78,7 @@ function Dashboard({ user, onLogout }) {
   const clearMessages = async () => {
     try {
       const token = localStorage.getItem('token');
-      await axios.delete(`${API_BASE_URL}/messages/clear`, {
+      await axios.delete(`${BASE_URL}/messages/clear`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       loadMessages();
@@ -191,13 +191,14 @@ function Dashboard({ user, onLogout }) {
             {fileMessages.map((msg, index) => (
               <div key={index} className="file-item">
                 <a
-                  href={`http://localhost:5001/uploads/${msg.filename}`}
+                  href={`${API_BASE_URL.replace("/api", "")}/uploads/${msg.filename}`}
                   className="file-link"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  📄 {msg.filename.split('/').slice(1).join('/')}
+                  📄 {msg.filename.split("/").slice(1).join("/")}
                 </a>
+
               </div>
             ))}
             {fileMessages.length === 0 && (
