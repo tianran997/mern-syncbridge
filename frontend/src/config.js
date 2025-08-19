@@ -1,2 +1,3 @@
-const API_BASE_URL = 'http://localhost:5001/api';
-export default API_BASE_URL;
+const BASE_URL = import.meta.env.MODE === "development" ? "http://localhost:5001/api" : "/api"
+const api = BASE_URL;
+export default api;

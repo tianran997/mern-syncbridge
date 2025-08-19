@@ -1,9 +1,9 @@
-const express = require('express');
-const multer = require('multer');
-const path = require('path');
-const fs = require('fs');
-const Message = require('../models/Message');
-const auth = require('../middleware/auth');
+import express from 'express';
+import multer from 'multer';
+import path from 'path';
+import fs from 'fs';
+import Message from '../models/Message.js';
+import auth from '../middleware/auth.js';
 
 const router = express.Router();
 
@@ -106,4 +106,4 @@ router.delete('/clear', auth, async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

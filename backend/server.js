@@ -1,24 +1,32 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
-const path = require('path');
-require('dotenv').config();
+import express from 'express';
+import mongoose from 'mongoose';
+import cors from 'cors';
+import path from 'path';
+import fs from 'fs';
+import dotenv from 'dotenv';
 
-const authRoutes = require('./routes/auth');
-const messageRoutes = require('./routes/messages');
+// Import routes and models
+import authRoutes from './routes/auth.js';
+import messageRoutes from './routes/messages.js';
+import Message from './models/Message.js';
+
+dotenv.config();
 
 const app = express();
+const __dirname = path.resolve();
 
 // Middleware
-app.use(cors({
-  origin: 'http://localhost:3000',
-  credentials: true
-}));
+if (process.env.NODE_ENV !== "production") {
+  app.use(cors({
+    origin: 'http://localhost:3000',
+    credentials: true
+  }));
+}
+
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Create uploads directory if it doesn't exist
-const fs = require('fs');
 const uploadsDir = path.join(__dirname, 'uploads');
 if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir, { recursive: true });
@@ -56,10 +64,17 @@ app.use((error, req, res, next) => {
   });
 });
 
+app.use(express.static(path.join(__dirname, "../frontend/build")));
+
+if (process.env.NODE_ENV === "production") {
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "../frontend", "build", "index.html"));
+  });
+}
+
 // Clean up expired messages every hour
 setInterval(async () => {
   try {
-    const Message = require('./models/Message');
     const twentyFourHoursAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
     const result = await Message.deleteMany({ createdAt: { $lt: twentyFourHoursAgo } });
     if (result.deletedCount > 0) {
