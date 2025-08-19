@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
+import BASE_URL from '../config';
 
 // Use direct URL instead of config file for now
-const API_BASE_URL = 'http://localhost:5001/api';
+const API_BASE_URL = BASE_URL;
 
 function Dashboard({ user, onLogout }) {
   const [messages, setMessages] = useState([]);

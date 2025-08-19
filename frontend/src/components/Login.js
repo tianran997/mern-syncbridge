@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import api from '../config.js';
+import BASE_URL from '../config.js';
 
-const API_BASE_URL = api;
+const API_BASE_URL = BASE_URL;
 
 function Login({ onLogin }) {
   const [formData, setFormData] = useState({
