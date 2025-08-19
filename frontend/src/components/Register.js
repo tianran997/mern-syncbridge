@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import api from '..config.js';
 
-const API_BASE_URL = 'http://localhost:5001/api';
+
+const API_BASE_URL = api;
 
 function Register({ onLogin }) {
   const [formData, setFormData] = useState({
