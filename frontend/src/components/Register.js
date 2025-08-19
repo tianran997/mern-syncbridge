@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import api from '..config.js';
+import api from '../config.js';
 
 
 const API_BASE_URL = api;
