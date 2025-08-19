@@ -14,6 +14,7 @@ dotenv.config();
 
 const app = express();
 const __dirname = path.resolve();
+const uri = process.env.MONGODB_URI;
 
 // Middleware
 if (process.env.NODE_ENV !== "production") {
@@ -32,24 +33,46 @@ if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir, { recursive: true });
 }
 
-// Database connection
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/syncbridge', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+// // Database connection
+// mongoose.connect(process.env.MONGODB_URI , {
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true,
+// });
 
-// Database connection events
-mongoose.connection.on('connected', () => {
-  console.log('✅ Connected to MongoDB');
-});
+// // Database connection events
+// mongoose.connection.on('connected', () => {
+//   console.log('✅ Connected to MongoDB');
+// });
 
-mongoose.connection.on('error', (err) => {
-  console.error('❌ MongoDB connection error:', err);
-});
+// mongoose.connection.on('error', (err) => {
+//   console.error('❌ MongoDB connection error:', err);
+// });
 
-mongoose.connection.on('disconnected', () => {
-  console.log('MongoDB disconnected');
-});
+// mongoose.connection.on('disconnected', () => {
+//   console.log('MongoDB disconnected');
+// });
+if (!uri) {
+  console.error('❌ MONGODB_URI is not set in .env');
+  process.exit(1);
+}
+
+const connectDB = async () => {
+  try {
+    await mongoose.connect(uri, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      tls: true, // 强制 TLS 连接
+    });
+    console.log('✅ Connected to MongoDB Atlas');
+  } catch (error) {
+    console.error('❌ MongoDB connection error:');
+    console.error(error.message);
+    console.error('💡 Make sure your IP is whitelisted in MongoDB Atlas and your URI is correct.');
+    process.exit(1);
+  }
+};
+
+connectDB();
 
 // Routes
 app.use('/api/auth', authRoutes);
